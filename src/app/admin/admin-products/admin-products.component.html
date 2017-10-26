@@ -1,0 +1,37 @@
+<button class="btn btn-primary" routerLink="add">Add product</button>
+
+<data-table 
+    *ngIf="products"
+    id="products"
+    [items]="products"
+    [itemCount]="count"
+    (reload)="reloadItems($event)"
+    >
+    <data-table-column
+        [property]="'title'"
+        [header]="'Title'"
+        [sortable]="true"
+        [resizable]="true">
+    </data-table-column>
+    <data-table-column
+        [property]="'category'"
+        [header]="'Category'"
+        [sortable]="true"
+        [resizable]="true">
+    </data-table-column>
+    <data-table-column
+        [property]="'price'"
+        [header]="'Price'"
+        [sortable]="true"
+        [resizable]="true">
+    </data-table-column>
+    <data-table-column
+    header="Actions">
+    <ng-template #dataTableHeader let-item="item">
+      <i>Actions</i>
+    </ng-template>
+    <ng-template #dataTableCell let-item="item">
+        <a [routerLink]="['/admin/products/', item.key]" class="btn btn-secondary">Edit</a>
+    </ng-template>
+  </data-table-column>
+</data-table>
