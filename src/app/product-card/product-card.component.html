@@ -3,6 +3,17 @@
   <div class="card-body">
     <h4 class="card-title">{{ product.title }}</h4>
     <p class="card-text">{{ product.price | currency:'EUR':true }}</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <div *ngIf="product.key">
+      <button class="btn btn-block btn-primary" *ngIf="ordered==0" (click)="increase()">Order</button>
+      <div class="input-group" *ngIf="ordered!=0">
+        <button (click)="decrease()" class="input-group-addon btn btn-secondary">
+          <i class="fa fa-minus" aria-hidden="true"></i>
+        </button>
+        <input (change)="amountChanged()" type="number" class="form-control text-center" [(ngModel)]="ordered" />
+        <button (click)="increase()" class="input-group-addon btn btn-secondary">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
   </div>
 </div>

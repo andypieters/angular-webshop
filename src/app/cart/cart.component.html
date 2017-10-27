@@ -1,3 +1,28 @@
-<p>
-  cart works!
-</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Product</th>
+      <th scope="col">Price</th>
+      <th style="width:200px;" scope="col">Amount</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of cart$ | async; trackBy trackByFn">
+      <td>{{ (item.product$ | async)?.title }}</td>
+      <td>{{ (item.product$ | async)?.price | currency:'EUR':true }}</td>
+      <td>
+        <div class="input-group">
+          <button (click)="updateItem(item.productKey, (1*item.amount)-1)" [disabled]="item.amount==0" class="btn btn-secondary input-addon">
+            <i class="fa fa-minus" aria-hidden="true"></i>
+          </button>
+          <input #amount [min]=0 (change)="updateItem(item.productKey, amount.value)" [value]="item.amount" type="number" class="form-control amount-input">
+          <button (click)="updateItem(item.productKey, (1*item.amount)+1)" class="btn btn-secondary input-addon">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          </button>
+        </div>
+      </td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>

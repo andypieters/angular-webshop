@@ -1,6 +1,16 @@
 {
   "rules": {
-    ".read": "true",
-    ".write": "auth != null"
+    ".read": "auth != null",
+    ".write": "auth != null",
+    "categories": {
+      ".read": true
+    },
+    "products": {
+      ".read": true
+    },
+    "shopping-carts": {
+      ".read": true,
+      ".write": true
+    }
   }
 }

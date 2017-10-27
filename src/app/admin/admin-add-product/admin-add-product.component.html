@@ -42,10 +42,12 @@
           <div *ngIf="imageUrl.errors.url">Please provide a valid url.</div>
         </div>
       </div>
-      <button [disabled]="f.invalid" class="btn btn-primary" type="submit">Save product</button>
+      <button [disabled]="f.invalid" class="btn btn-primary" type="submit">Save</button>
+
+      <button type="button" *ngIf="product?.key" (click)="remove()" class="btn btn-danger">Delete</button>
     </form>
   </div>
-  <div class="col-md-6 col-lg-4">
+  <div class="col-md-6 col-lg-4" *ngIf="product && product.title">
     <product-card width="150px" [product]="product"></product-card>
   </div>
 </div>
