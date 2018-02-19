@@ -35,7 +35,7 @@ export class ProductService {
     return this.products.valueChanges();
   }
   get(key):Observable<Product>{
-    return this.products.doc(key).valueChanges();
+    return <any>this.products.doc(key).valueChanges();
   }
   fromRef(ref: firebase.firestore.DocumentReference): Observable<Product>{
     return this.afs.doc<Product>(ref.path).valueChanges();

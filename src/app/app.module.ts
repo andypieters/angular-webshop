@@ -16,7 +16,6 @@ import { AngularFireModule } from "angularfire2";
 import { AngularFireAuthModule } from "angularfire2/auth";
 import { AngularFireDatabaseModule } from "angularfire2/database";
 import { AngularFirestoreModule } from "angularfire2/firestore";
-import { DataTableModule } from "angular-4-data-table-bootstrap-4";
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -24,7 +23,7 @@ import { ProductsComponent } from './products/products.component';
 import { CartComponent } from './cart/cart.component';
 import { LoginComponent } from './login/login.component';
 import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.component';
-import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
+// import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
 import { OrdersComponent } from './orders/orders.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { AdminProductFormComponent } from './admin/admin-add-product/admin-add-product.component';
@@ -39,7 +38,6 @@ import { DocPipe } from './doc.pipe';
     CartComponent,
     LoginComponent,
     AdminOrdersComponent,
-    AdminProductsComponent,
     OrdersComponent,
     AccessDeniedComponent,
     AdminProductFormComponent,
@@ -55,7 +53,6 @@ import { DocPipe } from './doc.pipe';
     AngularFirestoreModule,
     FormsModule,
     CustomFormsModule,
-    DataTableModule,
     RouterModule.forRoot([
       { path: '', component: ProductsComponent },
       { path: 'cart', component: CartComponent },
@@ -66,11 +63,11 @@ import { DocPipe } from './doc.pipe';
         component: AdminOrdersComponent, 
         canActivate: [AuthGuard, AdminAuthGuard] 
       },
-      { 
-        path: 'admin/products', 
-        component: AdminProductsComponent, 
-        canActivate: [AuthGuard, AdminAuthGuard]
-      },
+      // { 
+      //   path: 'admin/products', 
+      //   component: AdminProductsComponent, 
+      //   canActivate: [AuthGuard, AdminAuthGuard]
+      // },
       { 
         path: 'admin/products/add', 
         component: AdminProductFormComponent, 

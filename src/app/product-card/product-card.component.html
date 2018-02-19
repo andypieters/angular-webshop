@@ -2,7 +2,7 @@
   <img class="card-img-top" [src]="product.imageUrl" [alt]="product.title">
   <div class="card-body">
     <h4 class="card-title">{{ product.title }}</h4>
-    <p class="card-text">{{ product.price | currency:'EUR':true }}</p>
+    <p class="card-text">{{ product.price | currency:'EUR':'symbol' }}</p>
     <div *ngIf="product.key">
       <button class="btn btn-block btn-primary" *ngIf="ordered==0" (click)="increase()">Order</button>
       <div class="input-group" *ngIf="ordered!=0">

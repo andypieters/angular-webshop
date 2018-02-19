@@ -29,7 +29,7 @@ export class ShoppingCartService {
   db: AngularFirestoreCollection<ShoppingCart>;
 
   constructor(private afs: AngularFirestore, private auth: AuthService, private products: ProductService) {
-    this.db = afs.collection('shopping-carts');
+    this.db = afs.collection<ShoppingCart>('shopping-carts');
   }
 
   get cart$(): Observable<ShoppingCart> {
@@ -47,7 +47,7 @@ export class ShoppingCartService {
 
   get currentCart$(): Observable<AngularFirestoreDocument<ShoppingCart>> {
     return this.cartId$.map(cartId => {
-      return this.db.doc(cartId);
+      return <any>this.db.doc(cartId);
     });
   }
 
@@ -72,7 +72,7 @@ export class ShoppingCartService {
   }
   getItem(productKey: string): Observable<CartItem> {
     return this.currentCart$.switchMap(currentCart =>
-      currentCart.collection<CartItem>('items').doc(productKey).valueChanges()
+      <any>currentCart.collection<CartItem>('items').doc(productKey).valueChanges()
     );
   }
   getItems(): Observable<CartItem[]> {
