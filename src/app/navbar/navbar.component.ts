@@ -12,22 +12,22 @@ import { Subscription } from "rxjs/Subscription";
 })
 export class NavbarComponent {
   private routeSub: Subscription;
-  itemsInCart: number;
+  itemsInCart: number = 0;
 
   isCollapsed = true;
   user: AppUser;
 
-  constructor(private auth: AuthService, private router: Router, cart: ShoppingCartService) { 
+  constructor(private auth: AuthService, private router: Router, cart: ShoppingCartService) {
     auth.user$.subscribe(user => {
       this.user = user
     });
-    cart.cart$.subscribe(cart => {
-      this.itemsInCart = cart.reduce((sum,value) => sum+value.amount ,0);
+    cart.getItems().subscribe(items => {
+      this.itemsInCart = items.reduce((sum, value) => sum + value.amount, 0);
     });
   }
 
-  logout(){
+  logout() {
     this.auth.logout().then(() => this.router.navigate(['']));
   }
-  
+
 }

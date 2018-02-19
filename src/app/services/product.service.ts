@@ -1,35 +1,53 @@
+import * as firebase from 'firebase';
+import { Category } from './../models/category';
+import { AngularFirestoreDocument } from 'angularfire2/firestore/document/document';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestoreCollection } from 'angularfire2/firestore/collection/collection';
+
 import { Observable } from 'rxjs/Observable';
 import { Product } from './../models/product';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
 
 import 'rxjs/add/operator/map';
 
 @Injectable()
 export class ProductService {
+  private products: AngularFirestoreCollection<Product>;
 
-  constructor(private db: AngularFireDatabase) { }
+  constructor(private afs: AngularFirestore) { 
+    this.products = afs.collection<Product>('products');
+  }
 
+  save(product: Product){
+    if(product.key){
+      return this.update(product.key, product);
+    } else {
+      this.add(product);
+    }
+  }
   add(product: Product){
-    return this.db.list('products').push(product);
+    return this.products.add(product).then(reference => {  
+      product.key = reference.id;
+      this.update(reference.id, product);
+    });
   }
-
   getAll():Observable<Product[]>{
-    return this.db.list('products').snapshotChanges().map(changes => {
-      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    });
+    return this.products.valueChanges();
   }
-  get(key){
-    return this.db.object('products/'+key).snapshotChanges().map(item => {
-      return { key: item.payload.key, ...item.payload.val() };
-    });
+  get(key):Observable<Product>{
+    return this.products.doc(key).valueChanges();
   }
-  update(key: string, product:Product){
-    return this.db.object('products/'+key).update(product);
+  fromRef(ref: firebase.firestore.DocumentReference): Observable<Product>{
+    return this.afs.doc<Product>(ref.path).valueChanges();
   }
-  
-  remove(key:string){
-    return this.db.object('products/'+key).remove();
+  getRef(key):AngularFirestoreDocument<Product>{
+    return this.products.doc(key);
+  }
+  update(key: string, product:Product):Promise<void>{
+    return this.products.doc(key).update(product);
+  }  
+  remove(key:string):Promise<void>{
+    return this.products.doc(key).delete();
   }
 
 }

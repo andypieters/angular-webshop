@@ -1,6 +1,8 @@
+import { ProductService } from './../services/product.service';
 import { Observable } from 'rxjs/Observable';
 import { CartItem, ShoppingCartService } from '../services/shopping-cart.service';
 import { Component, OnInit } from '@angular/core';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-cart',
@@ -8,21 +10,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  cart$: Observable<CartItem[]>;
+  items$: Observable<CartItem[]>;
 
-  constructor(private cart: ShoppingCartService) { 
-    this.cart$ = cart.cart$;
+  constructor(public product: ProductService, private cart: ShoppingCartService) { 
+    this.items$ = cart.getItems();
   }
 
   ngOnInit() {
   }
 
-  trackByFn(item: any){
-    return item != null ? item.productKey: null;
+  trackByFn(item: CartItem){
+    return item.product != null ? item.product.id: null;
   }
 
-  updateItem(productKey: string, amount: number){
+  updateItem(product: firebase.firestore.DocumentReference, amount: number){
     if(amount<0)amount=0;
-    this.cart.setItem(productKey, +amount);
+    this.cart.setItem(product.id, +amount);
   }
 }

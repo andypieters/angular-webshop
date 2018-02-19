@@ -1,58 +1,83 @@
-import { Product } from '../models/product';
+import * as firebase from 'firebase';
+import { ProductService } from './product.service';
+import { Product } from './../models/product';
+import { ShoppingCart } from './shopping-cart.service';
 import { Observable } from 'rxjs/Observable';
+import { AngularFirestoreDocument } from 'angularfire2/firestore/document/document';
+import { AngularFirestoreCollection } from 'angularfire2/firestore/collection/collection';
+import { AppUser } from './../models/app-user';
+import { AuthService } from './auth.service';
+import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/fromPromise';
 
-export interface CartItem{
-  productKey: string;
+export interface CartItem {
+  product: firebase.firestore.DocumentReference;
   amount: number;
-  product$: Observable<Product>;
 }
+export interface ShoppingCart {
+  key: string;
+  items: AngularFirestoreCollection<CartItem>;
+}
+
 @Injectable()
 export class ShoppingCartService {
-  cartId: string;
 
-  get cart$():Observable<CartItem[]> {
-    return Observable.fromPromise(this.getCartId()).switchMap(cartId => {
-      return this.db.list('shopping-carts/' + cartId).valueChanges().map((cart:CartItem[]) => {
-        return cart.map(item => {
-          item.product$ = this.db.object('products/'+item.productKey).valueChanges();
-          return item;
-        });
-      });
+  db: AngularFirestoreCollection<ShoppingCart>;
+
+  constructor(private afs: AngularFirestore, private auth: AuthService, private products: ProductService) {
+    this.db = afs.collection('shopping-carts');
+  }
+
+  get cart$(): Observable<ShoppingCart> {
+    return this.currentCart$.switchMap(currentCart => currentCart.valueChanges());
+  }
+
+  get cartId$(): Observable<string> {
+    return this.auth.user$.switchMap(user => {
+      if (user && user.cartId) return Observable.of(user.cartId);
+      if (localStorage.getItem('cartId')) return Observable.of(localStorage.getItem('cartId'));
+
+      return this.createCartId();
     });
   }
 
-  constructor(private db: AngularFireDatabase) {
-    this.getCartId();
+  get currentCart$(): Observable<AngularFirestoreDocument<ShoppingCart>> {
+    return this.cartId$.map(cartId => {
+      return this.db.doc(cartId);
+    });
   }
 
-  private getCartId(): Promise<string> {
-    return new Promise(resolve => {
-      if (localStorage.getItem('cartId')) {
-        this.cartId = localStorage.getItem('cartId');
-        resolve(this.cartId);
-        return;
-      }
-
-      this.db.list('shopping-carts').push({}).then(result => {
-        localStorage.setItem('cartId', result.key);
-        this.cartId = result.key;
-        resolve(this.cartId);
-      });
+  private createCartId(): Observable<string> {
+    return Observable.fromPromise(this.afs.collection('shopping-carts').add({})).map(result => {
+      localStorage.setItem('cartId', result.id);
+      return result.id;
     });
   }
 
   setItem(productKey: string, amount: number) {
-    return this.db.object('shopping-carts/' + this.cartId + '/' + productKey).set({ productKey: productKey, amount: amount });
+    return this.currentCart$.switchMap(currentCart =>{
+        let item = { product: this.products.getRef(productKey).ref, amount: amount };
+        return currentCart.collection<CartItem>('items').doc(productKey).set(item);
+      }
+    ).toPromise();
   }
-  removeItem(productKey: string) {
-    return this.db.object('shopping-carts/' + this.cartId + '/' + productKey).remove();
+  removeItem(productKey: string): Promise<void> {
+    return this.currentCart$.switchMap(currentCart =>
+      currentCart.collection('items').doc(productKey).delete()
+    ).toPromise();
   }
-  getItem(productKey: string) {
-    return this.db.object('shopping-carts/' + this.cartId + '/' + productKey).valueChanges();
+  getItem(productKey: string): Observable<CartItem> {
+    return this.currentCart$.switchMap(currentCart =>
+      currentCart.collection<CartItem>('items').doc(productKey).valueChanges()
+    );
+  }
+  getItems(): Observable<CartItem[]> {
+    return this.currentCart$.switchMap(currentCart =>
+      currentCart.collection<CartItem>('items').valueChanges()
+    );
   }
 }

@@ -8,16 +8,16 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of cart$ | async; trackBy trackByFn">
-      <td>{{ (item.product$ | async)?.title }}</td>
-      <td>{{ (item.product$ | async)?.price | currency:'EUR':true }}</td>
+    <tr *ngFor="let item of items$ | async; trackBy trackByFn">
+      <td>{{ (item.product | doc | async)?.title }}</td>
+      <td>{{ (item.product | doc | async)?.price | currency:'EUR':true }}</td>
       <td>
         <div class="input-group">
-          <button (click)="updateItem(item.productKey, (1*item.amount)-1)" [disabled]="item.amount==0" class="btn btn-secondary input-addon">
+         <button (click)="updateItem(item.product, (1*item.amount)-1)" [disabled]="item.amount==0" class="btn btn-secondary input-addon">
             <i class="fa fa-minus" aria-hidden="true"></i>
           </button>
-          <input #amount [min]=0 (change)="updateItem(item.productKey, amount.value)" [value]="item.amount" type="number" class="form-control amount-input">
-          <button (click)="updateItem(item.productKey, (1*item.amount)+1)" class="btn btn-secondary input-addon">
+          <input #amount [min]=0 (change)="updateItem(item.product, amount.value)" [value]="item.amount" type="number" class="form-control amount-input">
+          <button (click)="updateItem(item.product, (1*item.amount)+1)" class="btn btn-secondary input-addon">
             <i class="fa fa-plus" aria-hidden="true"></i>
           </button>
         </div>

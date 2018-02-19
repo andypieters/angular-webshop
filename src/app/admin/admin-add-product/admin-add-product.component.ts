@@ -16,34 +16,39 @@ import 'rxjs/add/operator/take';
 export class AdminProductFormComponent implements OnInit {
   key: string;
   product: Product = <Product>{};
+  category: Category;
 
   categories$: Observable<Category[]>;
   constructor(
     private productService: ProductService,
     private router: Router,
-    categoryService: CategoryService,
+    private categoryService: CategoryService,
     private route: ActivatedRoute) {
-    this.categories$ = categoryService.categories$;
-    
+    this.categories$ = categoryService.categories$;   
   }
 
   ngOnInit() {
     let key = this.route.snapshot.paramMap.get('key');
     if (key) {
       this.key = key;
-      this.productService.get(key).take(1).subscribe(product => this.product = product);
+      this.productService.get(key).take(1).subscribe(product => {
+        this.product = product;
+        product.category$.subscribe(category => this.category = category);
+      });
     }
   }
 
   save(form: NgForm) {
-    if(this.key){
-      this.productService.update(this.key, form.value)
-    } else {
-      this.productService.add(form.value);
-    }
+    let product: Product = form.value;
+
+    product.category = this.categoryService.getRef(form.value.category);
+    if (this.key) product.key = this.key;
+
+    this.productService.save(product);
+
     this.router.navigate(['admin/products']);
   }
-  remove(){
+  remove() {
     this.productService.remove(this.key);
     this.router.navigate(['admin/products']);
   }

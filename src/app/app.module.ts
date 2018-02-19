@@ -15,6 +15,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFireModule } from "angularfire2";
 import { AngularFireAuthModule } from "angularfire2/auth";
 import { AngularFireDatabaseModule } from "angularfire2/database";
+import { AngularFirestoreModule } from "angularfire2/firestore";
 import { DataTableModule } from "angular-4-data-table-bootstrap-4";
 
 import { AppComponent } from './app.component';
@@ -28,6 +29,7 @@ import { OrdersComponent } from './orders/orders.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { AdminProductFormComponent } from './admin/admin-add-product/admin-add-product.component';
 import { ProductCardComponent } from './product-card/product-card.component';
+import { DocPipe } from './doc.pipe';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,8 @@ import { ProductCardComponent } from './product-card/product-card.component';
     OrdersComponent,
     AccessDeniedComponent,
     AdminProductFormComponent,
-    ProductCardComponent
+    ProductCardComponent,
+    DocPipe
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ import { ProductCardComponent } from './product-card/product-card.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
+    AngularFirestoreModule,
     FormsModule,
     CustomFormsModule,
     DataTableModule,
