@@ -4,7 +4,7 @@
       <th scope="col">Product</th>
       <th scope="col">Price</th>
       <th style="width:200px;" scope="col">Amount</th>
-      <th scope="col">Actions</th>
+      <th style="width:100px;" scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -13,16 +13,18 @@
       <td>{{ (item.product | doc | async)?.price | currency:'EUR':'symbol' }}</td>
       <td>
         <div class="input-group">
-         <button (click)="updateItem(item.product, (1*item.amount)-1)" [disabled]="item.amount==0" class="btn btn-secondary input-addon">
+         <button (click)="updateItem(item.product, (1*item.amount)-1)" [disabled]="item.amount==0" class="btn btn-secondary input-addon	d-none d-sm-block">
             <i class="fa fa-minus" aria-hidden="true"></i>
           </button>
           <input #amount [min]=0 (change)="updateItem(item.product, amount.value)" [value]="item.amount" type="number" class="form-control amount-input">
-          <button (click)="updateItem(item.product, (1*item.amount)+1)" class="btn btn-secondary input-addon">
+          <button (click)="updateItem(item.product, (1*item.amount)+1)" class="btn btn-secondary input-addon d-none d-sm-block">
             <i class="fa fa-plus" aria-hidden="true"></i>
           </button>
         </div>
       </td>
-      <td></td>
+      <td>
+        <button class="btn btn-light" (click)="delete(item.product)"><i class="fa fa-trash"></i></button>
+      </td>
     </tr>
   </tbody>
 </table>

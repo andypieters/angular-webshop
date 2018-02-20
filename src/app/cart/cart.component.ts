@@ -14,6 +14,7 @@ export class CartComponent implements OnInit {
 
   constructor(public product: ProductService, private cart: ShoppingCartService) { 
     this.items$ = cart.getItems();
+
   }
 
   ngOnInit() {
@@ -26,5 +27,8 @@ export class CartComponent implements OnInit {
   updateItem(product: firebase.firestore.DocumentReference, amount: number){
     if(amount<0)amount=0;
     this.cart.setItem(product.id, +amount);
+  }
+  delete(product: firebase.firestore.DocumentReference){
+    this.cart.removeItem(product.id);
   }
 }

@@ -16,7 +16,7 @@ import 'rxjs/add/operator/take';
 export class AdminProductFormComponent implements OnInit {
   key: string;
   product: Product = <Product>{};
-  category: Category;
+  categoryKey: string;
 
   categories$: Observable<Category[]>;
   constructor(
@@ -33,7 +33,7 @@ export class AdminProductFormComponent implements OnInit {
       this.key = key;
       this.productService.get(key).take(1).subscribe(product => {
         this.product = product;
-        product.category$.subscribe(category => this.category = category);
+        this.categoryKey = product.category.id;
       });
     }
   }
@@ -41,7 +41,7 @@ export class AdminProductFormComponent implements OnInit {
   save(form: NgForm) {
     let product: Product = form.value;
 
-    product.category = this.categoryService.getRef(form.value.category);
+    product.category = <any>this.categoryService.getRef(form.value.category).ref;
     if (this.key) product.key = this.key;
 
     this.productService.save(product);

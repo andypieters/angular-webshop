@@ -23,7 +23,7 @@ import { ProductsComponent } from './products/products.component';
 import { CartComponent } from './cart/cart.component';
 import { LoginComponent } from './login/login.component';
 import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.component';
-// import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
+import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
 import { OrdersComponent } from './orders/orders.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { AdminProductFormComponent } from './admin/admin-add-product/admin-add-product.component';
@@ -38,6 +38,7 @@ import { DocPipe } from './doc.pipe';
     CartComponent,
     LoginComponent,
     AdminOrdersComponent,
+    AdminProductsComponent,
     OrdersComponent,
     AccessDeniedComponent,
     AdminProductFormComponent,
@@ -50,7 +51,7 @@ import { DocPipe } from './doc.pipe';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     FormsModule,
     CustomFormsModule,
     RouterModule.forRoot([
@@ -63,11 +64,11 @@ import { DocPipe } from './doc.pipe';
         component: AdminOrdersComponent, 
         canActivate: [AuthGuard, AdminAuthGuard] 
       },
-      // { 
-      //   path: 'admin/products', 
-      //   component: AdminProductsComponent, 
-      //   canActivate: [AuthGuard, AdminAuthGuard]
-      // },
+      { 
+        path: 'admin/products', 
+        component: AdminProductsComponent, 
+        canActivate: [AuthGuard, AdminAuthGuard]
+      },
       { 
         path: 'admin/products/add', 
         component: AdminProductFormComponent, 

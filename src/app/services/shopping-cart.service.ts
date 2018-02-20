@@ -1,7 +1,7 @@
 import * as firebase from 'firebase';
 import { ProductService } from './product.service';
 import { Product } from './../models/product';
-import { ShoppingCart } from './shopping-cart.service';
+import { ShoppingCart, CartItem } from './shopping-cart.service';
 import { Observable } from 'rxjs/Observable';
 import { AngularFirestoreDocument } from 'angularfire2/firestore/document/document';
 import { AngularFirestoreCollection } from 'angularfire2/firestore/collection/collection';
@@ -40,14 +40,13 @@ export class ShoppingCartService {
     return this.auth.user$.switchMap(user => {
       if (user && user.cartId) return Observable.of(user.cartId);
       if (localStorage.getItem('cartId')) return Observable.of(localStorage.getItem('cartId'));
-
       return this.createCartId();
     });
   }
 
   get currentCart$(): Observable<AngularFirestoreDocument<ShoppingCart>> {
     return this.cartId$.map(cartId => {
-      return <any>this.db.doc(cartId);
+      return this.db.doc<ShoppingCart>(cartId);
     });
   }
 
@@ -72,12 +71,12 @@ export class ShoppingCartService {
   }
   getItem(productKey: string): Observable<CartItem> {
     return this.currentCart$.switchMap(currentCart =>
-      <any>currentCart.collection<CartItem>('items').doc(productKey).valueChanges()
+        currentCart.collection('items').doc<CartItem>(productKey).valueChanges()
     );
   }
   getItems(): Observable<CartItem[]> {
     return this.currentCart$.switchMap(currentCart =>
       currentCart.collection<CartItem>('items').valueChanges()
     );
-  }
+  }  
 }
