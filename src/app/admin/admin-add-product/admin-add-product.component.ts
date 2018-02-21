@@ -54,18 +54,13 @@ export class AdminProductFormComponent implements OnInit {
     this.productService.remove(this.key);
     this.router.navigate(['admin/products']);
   }
-  percentage: number;
-  url: string;
+  
   fileChanged(event) {
     const file = event.target.files[0];
 
     const filePath = 'products/'+file.name;
     const task = this.storage.upload(filePath, file);
-    task.percentageChanges().subscribe(
-      percentage => (this.percentage=percentage), 
-      error => {},
-      () => this.percentage=null
-    );
+  
     task.downloadURL().take(1).subscribe(url => this.product.imageUrl=url);
   }
 }
