@@ -46,7 +46,7 @@ export class ShoppingCartService {
 
   get currentCart$(): Observable<AngularFirestoreDocument<ShoppingCart>> {
     return this.cartId$.map(cartId => {
-      return this.db.doc<ShoppingCart>(cartId);
+      return this.db.doc(cartId);
     });
   }
 

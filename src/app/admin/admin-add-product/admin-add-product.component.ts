@@ -1,3 +1,4 @@
+import { AngularFireStorage } from 'angularfire2/storage';
 import { Product } from './../../models/product';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductService } from './../../services/product.service';
@@ -20,11 +21,12 @@ export class AdminProductFormComponent implements OnInit {
 
   categories$: Observable<Category[]>;
   constructor(
+    private storage: AngularFireStorage,
     private productService: ProductService,
     private router: Router,
     private categoryService: CategoryService,
     private route: ActivatedRoute) {
-    this.categories$ = categoryService.categories$;   
+    this.categories$ = categoryService.categories$;
   }
 
   ngOnInit() {
@@ -39,8 +41,8 @@ export class AdminProductFormComponent implements OnInit {
   }
 
   save(form: NgForm) {
-    let product: Product = form.value;
-
+    let product = this.product;
+    
     product.category = <any>this.categoryService.getRef(form.value.category).ref;
     if (this.key) product.key = this.key;
 
@@ -51,5 +53,19 @@ export class AdminProductFormComponent implements OnInit {
   remove() {
     this.productService.remove(this.key);
     this.router.navigate(['admin/products']);
+  }
+  percentage: number;
+  url: string;
+  fileChanged(event) {
+    const file = event.target.files[0];
+
+    const filePath = 'products/'+file.name;
+    const task = this.storage.upload(filePath, file);
+    task.percentageChanges().subscribe(
+      percentage => (this.percentage=percentage), 
+      error => {},
+      () => this.percentage=null
+    );
+    task.downloadURL().take(1).subscribe(url => this.product.imageUrl=url);
   }
 }

@@ -16,6 +16,7 @@ import { AngularFireModule } from "angularfire2";
 import { AngularFireAuthModule } from "angularfire2/auth";
 import { AngularFireDatabaseModule } from "angularfire2/database";
 import { AngularFirestoreModule } from "angularfire2/firestore";
+import { AngularFireStorageModule } from "angularfire2/storage";
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -50,7 +51,7 @@ import { DocPipe } from './doc.pipe';
     NgbModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFireDatabaseModule,
+    AngularFireStorageModule,
     AngularFirestoreModule.enablePersistence(),
     FormsModule,
     CustomFormsModule,
@@ -90,7 +91,8 @@ import { DocPipe } from './doc.pipe';
     UserService,
     CategoryService,
     ProductService,
-    ShoppingCartService
+    ShoppingCartService,
+    DocPipe
   ],
   bootstrap: [AppComponent]
 })

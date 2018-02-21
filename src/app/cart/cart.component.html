@@ -4,6 +4,7 @@
       <th scope="col">Product</th>
       <th scope="col">Price</th>
       <th style="width:200px;" scope="col">Amount</th>
+      <th scope="col">Total</th>
       <th style="width:100px;" scope="col">Actions</th>
     </tr>
   </thead>
@@ -22,9 +23,16 @@
           </button>
         </div>
       </td>
+      <td>{{ (item.product | doc | async)?.price * amount.value | currency:'EUR':'symbol' }}</td>
       <td>
         <button class="btn btn-light" (click)="delete(item.product)"><i class="fa fa-trash"></i></button>
       </td>
     </tr>
   </tbody>
+  <tfoot>
+    <tr>
+      <th colspan="3">Total: </th>
+      <th>{{ cartTotal$ | async | currency:'EUR':'symbol' }}</th>
+    </tr>
+  </tfoot>
 </table>
