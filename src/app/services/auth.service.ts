@@ -1,9 +1,11 @@
-import { Subscription } from 'rxjs/Subscription';
+
+import {of as observableOf,  Subscription ,  Observable } from 'rxjs';
+
+import {switchMap} from 'rxjs/operators';
 import { UserService } from './user.service';
 import { AppUser } from './../models/app-user';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Injectable } from '@angular/core';
-import { Observable } from "rxjs/Observable";
 import * as firebase from 'firebase';
 
 @Injectable()
@@ -11,10 +13,10 @@ export class AuthService {
   user$: Observable<AppUser>;
 
   constructor(private fbAuth:AngularFireAuth, private userService: UserService) {
-    this.user$ = fbAuth.authState.switchMap(user => {
-      if(!user) return Observable.of(null);      
+    this.user$ = fbAuth.authState.pipe(switchMap(user => {
+      if(!user) return observableOf(null);      
       return this.userService.get(user.uid);
-    });
+    }));
   }
 
   loginGoogle():Promise<boolean>{

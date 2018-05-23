@@ -1,7 +1,7 @@
 import { AngularFirestore } from 'angularfire2/firestore';
 import { NavbarComponent } from './../navbar/navbar.component';
 import { AppUser } from './../models/app-user';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase'

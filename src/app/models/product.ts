@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AngularFirestoreDocument } from 'angularfire2/firestore/document/document';
 import { Category } from './category';
 import * as firebase from 'firebase';

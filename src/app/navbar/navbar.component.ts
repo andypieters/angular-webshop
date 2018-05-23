@@ -3,7 +3,7 @@ import { AppUser } from './../models/app-user';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './../services/auth.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'navbar',

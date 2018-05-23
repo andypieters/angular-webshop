@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ShoppingCartService } from './../services/shopping-cart.service';
 import { Product } from './../models/product';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
@@ -18,7 +18,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if(this.product.key){
       this.subscription = this.cart.getItem(this.product.key).subscribe(cartItem => {
-        if(cartItem !== null) this.ordered = cartItem['amount'];
+        if(cartItem) this.ordered = cartItem['amount'];
       });
     }
   }

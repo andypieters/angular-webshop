@@ -1,13 +1,14 @@
+import {take, finalize} from 'rxjs/operators';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { Product } from './../../models/product';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductService } from './../../services/product.service';
 import { Category } from './../../models/category';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CategoryService } from './../../services/category.service';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import 'rxjs/add/operator/take';
+
 
 @Component({
   selector: 'app-admin-add-product',
@@ -33,7 +34,7 @@ export class AdminProductFormComponent implements OnInit {
     let key = this.route.snapshot.paramMap.get('key');
     if (key) {
       this.key = key;
-      this.productService.get(key).take(1).subscribe(product => {
+      this.productService.get(key).pipe(take(1)).subscribe(product => {
         this.product = product;
         this.categoryKey = product.category.id;
       });
@@ -60,7 +61,15 @@ export class AdminProductFormComponent implements OnInit {
 
     const filePath = 'products/'+file.name;
     const task = this.storage.upload(filePath, file);
+    const fileRef = this.storage.ref(filePath);
   
-    task.downloadURL().take(1).subscribe(url => this.product.imageUrl=url);
+    task.snapshotChanges().pipe(
+      finalize(() => fileRef.getDownloadURL().subscribe(url => this.product.imageUrl = url) )
+    ).subscribe();
+    
+    task.then(result => {
+      console.log(result.downloadURL);
+      this.product.imageUrl = result.downloadURL
+    });  
   }
 }

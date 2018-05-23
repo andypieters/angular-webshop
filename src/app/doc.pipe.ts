@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Pipe, PipeTransform } from '@angular/core';
 

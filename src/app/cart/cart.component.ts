@@ -1,14 +1,17 @@
-import { Observable } from 'rxjs/Observable';
+
+import {from as observableFrom,  Observable } from 'rxjs';
+
+import {map, take, switchMap, mergeMap, reduce} from 'rxjs/operators';
 import { Product } from './../models/product';
 import { DocPipe } from './../doc.pipe';
 import { ProductService } from './../services/product.service';
 import { CartItem, ShoppingCartService } from '../services/shopping-cart.service';
 import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/operator/reduce';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/mergeMap';
+
+
+
+
 
 @Component({
   selector: 'app-cart',
@@ -22,11 +25,11 @@ export class CartComponent implements OnInit {
   constructor(public product: ProductService, private cart: ShoppingCartService) {
     this.items$ = cart.getItems();
 
-    this.cartTotal$ = this.items$.switchMap(items => {
-      return Observable.from(items).mergeMap(line => {
-        return this.product.fromRef(line.product).take(1).map(product => product.price * line.amount);
-      }).reduce((acc, x) => acc + x, 0);
-    });
+    this.cartTotal$ = this.items$.pipe(switchMap(items => {
+      return observableFrom(items).pipe(mergeMap(line => {
+        return this.product.fromRef(line.product).pipe(take(1),map(product => product.price * line.amount),);
+      }),reduce((acc, x) => acc + x, 0),);
+    }));
   }
 
   ngOnInit() {

@@ -4,11 +4,11 @@ import { AngularFirestoreDocument } from 'angularfire2/firestore/document/docume
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFirestoreCollection } from 'angularfire2/firestore/collection/collection';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Product } from './../models/product';
 import { Injectable } from '@angular/core';
 
-import 'rxjs/add/operator/map';
+
 
 @Injectable()
 export class ProductService {
