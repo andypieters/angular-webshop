@@ -1,8 +1,8 @@
-import * as firebase from 'firebase';
-import { Category } from './../models/category';
-import { AngularFirestoreDocument } from '@angular/fire/firestore/document/document';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFirestoreCollection } from '@angular/fire/firestore/collection/collection';
+import { 
+  AngularFirestore, 
+  DocumentReference, 
+  AngularFirestoreCollection, 
+  AngularFirestoreDocument } from '@angular/fire/firestore';
 
 import { Observable } from 'rxjs';
 import { Product } from './../models/product';
@@ -37,7 +37,7 @@ export class ProductService {
   get(key):Observable<Product>{
     return <any>this.products.doc(key).valueChanges();
   }
-  fromRef(ref: firebase.firestore.DocumentReference): Observable<Product>{
+  fromRef(ref: DocumentReference): Observable<Product>{
     return this.afs.doc<Product>(ref.path).valueChanges();
   }
   getRef(key):AngularFirestoreDocument<Product>{

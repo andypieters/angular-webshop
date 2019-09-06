@@ -2,23 +2,19 @@
 import {from as observableFrom, of as observableOf,  Observable } from 'rxjs';
 
 import {map, switchMap} from 'rxjs/operators';
-import * as firebase from 'firebase';
 import { ProductService } from './product.service';
-import { Product } from './../models/product';
 import { ShoppingCart, CartItem } from './shopping-cart.service';
 import { AngularFirestoreDocument } from '@angular/fire/firestore/document/document';
 import { AngularFirestoreCollection } from '@angular/fire/firestore/collection/collection';
-import { AppUser } from './../models/app-user';
 import { AuthService } from './auth.service';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 
 
 
 
 export interface CartItem {
-  product: firebase.firestore.DocumentReference;
+  product: DocumentReference;
   amount: number;
 }
 export interface ShoppingCart {

@@ -1,17 +1,14 @@
 import { AngularFirestore } from '@angular/fire/firestore';
-import { NavbarComponent } from './../navbar/navbar.component';
 import { AppUser } from './../models/app-user';
 import { Observable } from 'rxjs';
-import { AngularFireDatabase } from '@angular/fire/database';
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase'
-
+import { User } from 'firebase';
 @Injectable()
 export class UserService {
   constructor(private afs: AngularFirestore) {
   }
 
-  save(user: firebase.User) {
+  save(user: User) {
     let afsUser = this.afs.doc<AppUser>('users/' + user.uid);
     
     let appUser: AppUser;

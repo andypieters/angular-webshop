@@ -1,17 +1,11 @@
-
 import {from as observableFrom,  Observable } from 'rxjs';
 
 import {map, take, switchMap, mergeMap, reduce} from 'rxjs/operators';
-import { Product } from './../models/product';
 import { DocPipe } from './../doc.pipe';
 import { ProductService } from './../services/product.service';
 import { CartItem, ShoppingCartService } from '../services/shopping-cart.service';
 import { Component, OnInit } from '@angular/core';
-import * as firebase from 'firebase';
-
-
-
-
+import {DocumentReference} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-cart',
@@ -38,11 +32,11 @@ export class CartComponent implements OnInit {
   trackByFn(index, item: CartItem) {
     return item.product != null ? item.product.id : null;
   }
-  updateItem(product: firebase.firestore.DocumentReference, amount: number) {
+  updateItem(product: DocumentReference, amount: number) {
     if (amount < 0) amount = 0;
     this.cart.setItem(product.id, +amount);
   }
-  delete(product: firebase.firestore.DocumentReference) {
+  delete(product: DocumentReference) {
     this.cart.removeItem(product.id);
   }
 }
