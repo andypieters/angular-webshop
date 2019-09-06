@@ -1,8 +1,8 @@
 import * as firebase from 'firebase';
 import { Category } from './../models/category';
-import { AngularFirestoreDocument } from 'angularfire2/firestore/document/document';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { AngularFirestoreCollection } from 'angularfire2/firestore/collection/collection';
+import { AngularFirestoreDocument } from '@angular/fire/firestore/document/document';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestoreCollection } from '@angular/fire/firestore/collection/collection';
 
 import { Observable } from 'rxjs';
 import { Product } from './../models/product';

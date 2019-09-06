@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({

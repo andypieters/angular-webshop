@@ -6,12 +6,12 @@ import * as firebase from 'firebase';
 import { ProductService } from './product.service';
 import { Product } from './../models/product';
 import { ShoppingCart, CartItem } from './shopping-cart.service';
-import { AngularFirestoreDocument } from 'angularfire2/firestore/document/document';
-import { AngularFirestoreCollection } from 'angularfire2/firestore/collection/collection';
+import { AngularFirestoreDocument } from '@angular/fire/firestore/document/document';
+import { AngularFirestoreCollection } from '@angular/fire/firestore/collection/collection';
 import { AppUser } from './../models/app-user';
 import { AuthService } from './auth.service';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireDatabase } from '@angular/fire/database';
 import { Injectable } from '@angular/core';
 
 

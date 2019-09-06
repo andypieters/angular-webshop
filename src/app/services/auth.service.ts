@@ -4,7 +4,7 @@ import {of as observableOf,  Subscription ,  Observable } from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import { UserService } from './user.service';
 import { AppUser } from './../models/app-user';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 

@@ -1,5 +1,5 @@
 import {take, finalize} from 'rxjs/operators';
-import { AngularFireStorage } from 'angularfire2/storage';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Product } from './../../models/product';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductService } from './../../services/product.service';

@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "angularwebshop-4e429"
+  },
+  "targets": {
+    "angularwebshop-4e429": {
+      "hosting": {
+        "shop-project": [
+          "angularwebshop-4e429"
+        ]
+      }
+    }
   }
 }
