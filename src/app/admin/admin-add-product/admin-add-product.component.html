@@ -1,56 +1,54 @@
 <div class="row">
-  <div class="col-md-6">
-    <form #f="ngForm" (submit)="save(f)">
-      <div class="form-group">
-        <label for="title">Title</label>
-        <input #title="ngModel" [(ngModel)]="product.title" [class.is-invalid]="title.touched && title.invalid" name="title" type="text"
-          id="title" class="form-control" required>
-        <div class="invalid-feedback" *ngIf="title.touched && title.invalid">
-          <div *ngIf="title.errors.required">Title is required.</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="price">Price</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">&euro;</span>
-          </div>
-          <input [(ngModel)]="product.price" #price="ngModel" name="price" [min]="0" [class.is-invalid]="price.touched && price.invalid"
-            type="number" id="price" class="form-control" required>
-        </div>
-        <div class="invalid-feedback" *ngIf="price.touched && price.invalid">
-          <div *ngIf="price.errors.required">Price is required.</div>
-          <div *ngIf="price.errors.min">Price must be greater than 0.</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="category">Category</label>
-        <select [(ngModel)]="categoryKey" #category="ngModel" name="category" [class.is-invalid]="category.touched && category.invalid"
-          id="category" class="form-control" required>
+    <div class="col-md-6">
+        <form #f="ngForm" (submit)="save(f)">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input #title="ngModel" [(ngModel)]="product.title" [class.is-invalid]="title.touched && title.invalid" name="title" type="text" id="title" class="form-control" required>
+                <div class="invalid-feedback" *ngIf="title.touched && title.invalid">
+                    <div *ngIf="title.errors.required">Title is required.</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">&euro;</span>
+                    </div>
+                    <input [(ngModel)]="product.price" #price="ngModel" name="price" [min]="0" [class.is-invalid]="price.touched && price.invalid" type="number" id="price" class="form-control" required>
+                </div>
+                <div class="invalid-feedback" *ngIf="price.touched && price.invalid">
+                    <div *ngIf="price.errors.required">Price is required.</div>
+                    <div *ngIf="price.errors.min">Price must be greater than 0.</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select [(ngModel)]="categoryKey" #category="ngModel" name="category" [class.is-invalid]="category.touched && category.invalid" id="category" class="form-control" required>
           <option *ngFor="let category of categories$ | async;" [value]="category.id">
             {{ category.name }}
           </option>
         </select>
-        <div class="invalid-feedback" *ngIf="category.touched && category.invalid">
-          Category is required.
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="imageFile">Image</label>
-        <div class="input-group">
-          <div class="custom-file">
-            <input (change)="fileChanged($event)" type="file" class="custom-file-input" id="imageFile">
-            <label class="custom-file-label" for="imageFile">Choose file</label>
-          </div>
-        </div>
-      </div>
+                <div class="invalid-feedback" *ngIf="category.touched && category.invalid">
+                    Category is required.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="imageFile">Image</label>
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input (change)="fileChanged($event)" type="file" class="custom-file-input" id="imageFile">
+                        <label class="custom-file-label" for="imageFile">Choose file</label>
+                    </div>
+                </div>
+                <div>{{ uploadPercentage }}</div>
+            </div>
 
-      <button [disabled]="f.invalid" class="btn btn-primary" type="submit">Save</button>
+            <button [disabled]="f.invalid" class="btn btn-primary" type="submit">Save</button>
 
-      <button type="button" *ngIf="product?.key" (click)="remove()" class="btn btn-danger">Delete</button>
-    </form>
-  </div>
-  <div class="col-md-6 col-lg-4" *ngIf="product && product.title">
-    <product-card width="150px" [product]="product"></product-card>
-  </div>
+            <button type="button" *ngIf="product?.key" (click)="remove()" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+    <div class="col-md-6 col-lg-4" *ngIf="product && product.title">
+        <product-card width="150px" [product]="product"></product-card>
+    </div>
 </div>
