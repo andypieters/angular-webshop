@@ -1,17 +1,12 @@
 
-import {from as observableFrom, of as observableOf,  Observable } from 'rxjs';
-
-import {map, switchMap} from 'rxjs/operators';
+import { from as observableFrom, of as observableOf, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { ProductService } from './product.service';
-import { ShoppingCart, CartItem } from './shopping-cart.service';
 import { AngularFirestoreDocument } from '@angular/fire/firestore/document/document';
 import { AngularFirestoreCollection } from '@angular/fire/firestore/collection/collection';
 import { AuthService } from './auth.service';
 import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
-
-
-
 
 export interface CartItem {
   product: DocumentReference;
@@ -57,10 +52,10 @@ export class ShoppingCartService {
   }
 
   setItem(productKey: string, amount: number) {
-    return this.currentCart$.pipe(switchMap(currentCart =>{
-        let item = { product: this.products.getRef(productKey).ref, amount: amount };
-        return currentCart.collection<CartItem>('items').doc(productKey).set(item);
-      }
+    return this.currentCart$.pipe(switchMap(currentCart => {
+      let item = { product: this.products.getRef(productKey).ref, amount: amount };
+      return currentCart.collection<CartItem>('items').doc(productKey).set(item);
+    }
     )).toPromise();
   }
   removeItem(productKey: string): Promise<void> {
@@ -70,12 +65,12 @@ export class ShoppingCartService {
   }
   getItem(productKey: string): Observable<CartItem> {
     return this.currentCart$.pipe(switchMap(currentCart =>
-        currentCart.collection('items').doc<CartItem>(productKey).valueChanges()
+      currentCart.collection('items').doc<CartItem>(productKey).valueChanges()
     ));
   }
   getItems(): Observable<CartItem[]> {
     return this.currentCart$.pipe(switchMap(currentCart =>
       currentCart.collection<CartItem>('items').valueChanges()
     ));
-  }  
+  }
 }

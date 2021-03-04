@@ -6,7 +6,11 @@ import { UserService } from './user.service';
 import { AppUser } from './../models/app-user';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Injectable } from '@angular/core';
-import { auth } from 'firebase/app';
+import firebase from 'firebase/app';
+
+import "firebase/auth";
+
+const auth = firebase.auth;
 
 @Injectable()
 export class AuthService {
@@ -30,7 +34,7 @@ export class AuthService {
         break;
     }
     return new Promise(resolve => {
-      this.fbAuth.auth.signInWithPopup(new auth.GoogleAuthProvider()).then(
+      this.fbAuth.signInWithPopup(new auth.GoogleAuthProvider()).then(
         (result) => {
           this.userService.save(result.user);
           resolve(true)
@@ -47,7 +51,7 @@ export class AuthService {
 
   logout(): Promise<boolean> {
     return new Promise(
-      (resolve) => this.fbAuth.auth.signOut().then(
+      (resolve) => this.fbAuth.signOut().then(
         () => resolve(true)
       )
     );

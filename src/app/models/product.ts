@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
 import { AngularFirestoreDocument } from '@angular/fire/firestore/document/document';
 import { Category } from './category';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 
-export interface Product{
+export interface Product {
     key: string;
     title: string;
     price: number;
